@@ -10,11 +10,17 @@
 # distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
+import os
+
 from sagemaker_containers.beta.framework import env, server
 
 
 def main():
-    server.start(env.ServingEnv().framework_module)
+    try:
+        import mms
+        server.start_mms()
+    except ImportError:
+        server.start(env.ServingEnv().framework_module)
 
 
 if __name__ == "__main__":
