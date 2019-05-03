@@ -242,13 +242,14 @@ def test_training_framework_network_isolation(user_script, capture_error):
         f.write(user_script)
         f.close()
 
-    module = test.UserModule(test.File(name='user_script.py', data="")) # dummy module for hyperparameters
+    module = test.UserModule(test.File(name='user_script.py', data=""))  # dummy module for hyperparameters
 
     submit_dir = env.input_dir + '/data/code'
     hyperparameters = dict(training_data_file='training_data.npz', sagemaker_program='user_script.py',
                            sagemaker_submit_directory=submit_dir, epochs=10, batch_size=64, optimizer='Adam')
 
-    test.prepare(user_module=module, hyperparameters=hyperparameters, channels=[channel_train, channel_code], local=True)
+    test.prepare(user_module=module, hyperparameters=hyperparameters, channels=[channel_train, channel_code],
+                 local=True)
 
     assert execute_an_wrap_exit(framework_training_fn) == trainer.SUCCESS_CODE
 
